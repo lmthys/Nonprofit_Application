@@ -25,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * On Click for the map image asset. Will take to a map with the location fo the non-profit
+     * @param v
+     */
+    public void OnClickMap(View v) {
+
+
+    }
+
+    /**
      * On click
      * @param v
      */

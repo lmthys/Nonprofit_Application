@@ -3,6 +3,7 @@ package com.example.lmandrew.nonprofit_application;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
@@ -10,8 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
@@ -27,6 +32,14 @@ public class NewNoteActivity extends Activity {
 
         //Set the new note text
         notes = findViewById(R.id.taking_notes);
+
+        //Check if there file name from intent
+        Intent intent = getIntent();
+        if(intent.getStringExtra("File") != null){
+           String content = Open(intent.getStringExtra("File"));
+           notes.setText(content);
+
+        }
     }
 
     public void OnClickSave(View v){
@@ -63,7 +76,7 @@ public class NewNoteActivity extends Activity {
     private void save(String filename){
         // Now save the actual text
         try {
-            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(filename, 0));
+            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(filename+".txt", 0));
             out.write(notes.getText().toString());
             out.close();
             Toast.makeText(getApplicationContext(), "Note was saved!", Toast.LENGTH_SHORT).show();
@@ -71,5 +84,43 @@ public class NewNoteActivity extends Activity {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Exception" + e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Method to check if a file exists, adapted from https://www.androidauthority.com/lets-build-a-simple-text-editor-for-android-773774/
+     * @param fname the current filename
+     */
+    public boolean FileExists(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
+    }
+
+    /**
+     * Method to open a file that exists adapted from https://www.androidauthority.com/lets-build-a-simple-text-editor-for-android-773774/
+     *
+     */
+    public String Open(String fileName) {
+        String content = "";
+        if(FileExists(fileName)) {
+            try {
+                InputStream in = openFileInput(fileName);
+                if(in != null) {
+                    InputStreamReader inputStreamReader = new InputStreamReader(in);
+                    BufferedReader reader = new BufferedReader(inputStreamReader);
+                    String str = "";
+                    StringBuilder buf = new StringBuilder();
+
+                    while ((str = reader.readLine()) != null) {
+                        buf.append(str + "\n");
+                    } in.close();
+                    content = buf.toString();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return content;
     }
 }
