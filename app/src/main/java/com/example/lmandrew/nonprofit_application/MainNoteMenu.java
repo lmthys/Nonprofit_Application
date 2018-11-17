@@ -24,6 +24,8 @@ public class MainNoteMenu extends Activity {
 
     private SimpleAdapter adapter;
 
+    private ListView listView;
+
     private ArrayList<HashMap<String, String>> files;
     private ArrayList<String> keep;
 
@@ -31,16 +33,17 @@ public class MainNoteMenu extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_taking_menu);
-        // Prepare files
+
+        //get list view
+        listView = findViewById(R.id.listOfNotes);
+
         prepareNotes();
 
         // Create from an tos
         String[] from = {"fileName"};
         int[] to = {R.id.file_name};
         adapter = new SimpleAdapter(this, files, R.layout.row, from, to);
-
-        //get and set list view
-        ListView listView = findViewById(R.id.listOfNotes);
+        //set the list view adpater
         listView.setAdapter(adapter);
 
         //send a note that is clicked to the newnoteactivity to display
@@ -54,6 +57,16 @@ public class MainNoteMenu extends Activity {
         });
 
 
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        prepareNotes();
+        adapter.notifyDataSetChanged();
 
 
     }
@@ -89,4 +102,5 @@ public class MainNoteMenu extends Activity {
             }
         }
     }
+
 }

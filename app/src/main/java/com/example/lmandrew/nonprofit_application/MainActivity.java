@@ -1,5 +1,6 @@
 package com.example.lmandrew.nonprofit_application;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void OnClickMap(View v) {
 
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+
 
     }
 
@@ -39,5 +43,17 @@ public class MainActivity extends AppCompatActivity {
      */
     public void OnClickContact(View v){
 
+        Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * On click
+     * @param v
+     */
+    public void OnClickCalendar(View v){
+
+        Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+        startActivity(intent);
     }
 }

@@ -76,7 +76,8 @@ public class NewNoteActivity extends Activity {
     private void save(String filename){
         // Now save the actual text
         try {
-            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(filename+".txt", 0));
+            filename += ".txt";
+            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(filename, 0));
             out.write(notes.getText().toString());
             out.close();
             Toast.makeText(getApplicationContext(), "Note was saved!", Toast.LENGTH_SHORT).show();
